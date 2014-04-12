@@ -1,0 +1,139 @@
+\documentclass[10pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[ruled]{algorithm2e}
+\usepackage{empheq}
+\usepackage{float}
+\usepackage{tikz}
+
+\newcommand{\RR}{\mathfrak{R}}
+\newcommand{\KK}{\mathfrak{K}}
+\newcommand{\CC}{\mathfrak{C}}
+\newcommand{\ff}{\mathfrak{f}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{mydef}{Definition}
+\DeclareMathOperator*{\argmin}{\arg\,\min}
+
+\title{Computing debt cuts leading to global zero-equity}
+\author{Rodion ``rodde'' Efremov}
+
+\begin{document}
+  \maketitle
+  
+  \begin{abstract}
+  In this paper we present a method for computing a set of loan cuts, which, once applied, lead to a global zero-equity state, i.e., each and every party in the financial network may forget all liabilities. 
+  \end{abstract}
+  
+  \section{Basic definitions}
+  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\mathfrak{R}_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon A \to \mathcal{P}(\mathfrak{R}_> \times \mathfrak{R}_{\geq} \times (\mathfrak{N} \cup \{\infty\}) \times \mathfrak{R})$. If $(K, r, n, t) \in \mathcal{P}(\mathfrak{R}_> \times \mathfrak{R}_{\geq} \times (\mathfrak{N} \cup \{\infty\}) \times \mathfrak{R})$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was admitted. Together the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
+
+The most fundamental function in this paper is the equity function $e_G \colon V \times \mathfrak{R} \to \mathfrak{R}$ defined as 
+\begin{align*}
+e_G(u, \tau) &= \sum_{(u, v) \in G.A} \Bigg( \sum_{(K, r, n, t) \in w_G(u,v)} \mathfrak{C}_{\tau}(K, r, n, t) \Bigg) \\
+                   &- \sum_{(v, u) \in G.A} \Bigg( \sum_{(K, r, n, t) \in w_G(v, u)} \mathfrak{C}_{\tau}(K, r, n, t) \Bigg),
+\end{align*}
+where 
+\[
+\mathfrak{C}_{\tau}(K, r, n, t) = 
+\begin{cases}
+K\big( 1 + \frac{r}{n}\big)^{\lfloor n(\tau - t) \rfloor} & \mbox{if } n \in \mathfrak{N} \\
+Ke^{r(\tau - t)} & \mbox{if } n = \infty.
+\end{cases}
+\]
+Also, we assume we are given a function $\mathfrak{f}_G \colon G.V \to \mathfrak{R}$ mapping every party $u$ in the financial graph to a time point at which $u$ is ready to pay back at most all of its debts. (By ``at most'' we mean that we will try to minimize the magnitude of the node's debt cuts, yet it is not possible for a node having no loans to the other nodes, which implies that such node $u$ will have to pay all debts at once at the time point $\mathfrak{f}_G(u)$.)
+
+As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max_{u \in G.V} \{ \mathfrak{f}_G(u) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ (which is supposed to happen at $\mathfrak{f}(u)$) with $(K, r, n, t) \in w_G(v, u)$ the contract becomes 
+\[
+\mathfrak{C}_{\tau}\big(\mathfrak{C}_{\mathfrak{f}_G(u)}(K, r, n, t) - C, r, n, \mathfrak{f}_G(u) \big),
+\]
+$\tau \geq \mathfrak{f}_G(u)$.
+%Also, we will need the ``accumulation function' $A$ mapping a contract $\KK$ to 
+%\[
+%\begin{cases}
+%\Big( 1 + \frac{\KK.r}{\KK.n} \Big)^{ \KK.n } & \mbox{if } n \in \mathfrak{N} \\
+%e^{\KK.r \KK.n} & \mbox{if } n = \infty.
+%\end{cases}
+%\]
+ Next we define the concept of equilibrium.
+\begin{mydef}
+The financial graph $G$ is said to be in equilibrium at time point $\tau$ if and only if $e_G(u,\tau) = 0$ for all $u \in G.V$.
+\end{mydef}
+Once given $G$, $\ff_G$ and $T_G$, we attempt to compute a function $\Xi_G \colon G.A \times \RR_> \times \RR_{\geq} \times \RR_> \times \RR \to \RR_{\geq}$ such that after applying a debt cut from $v$ to $u$ of magnitude $\Xi(u, v, \KK)$ against the contract $\KK$ for  all $(u, v) \in G.A$, $G$ obtains such a state that it evolves towards equilibrium at time point $T_G$.
+
+\section{Solution}
+Suppose we are given a directed edge $(u, v) \in G.A$ for which $|w(u,v)| = n$. Now $w(u, v) = \{ \mathfrak{K}_1, \dots, \mathfrak{K}_n \}$. ($\mathfrak{K}_i$ is a contract tuple; e.g. $\mathfrak{K}.K$ is the initial principal of $\mathfrak{K}$.) Suppose also that $v$ (the debtor node with respect to $u$) managed to raise $C$ amount of resources to be invested as a debt cut to $u$ at time point $\mathfrak{f}_G(v)$. Now we can partition $C$ into  $\{ C_1, \dots, C_n \}$ such that $C_i \geq 0$ for all $i$ and 
+\begin{equation}
+C = \sum_{i = 1}^n C_i.
+\end{equation}
+Another condition is that 
+\begin{equation}
+\label{eq:minimize}
+\sum_{i = 1}^n \mathfrak{C}_{T_G} \big( \mathfrak{C}_{\mathfrak{f}_G(v)}(\mathfrak{K}_i) - C_i, \mathfrak{K}_i.r, \mathfrak{K}_i.n, \mathfrak{f}_G(v) \big)
+\end{equation}
+is minimized; basically minimizing \eqref{eq:minimize} reduces to minimizing
+\begin{equation}
+\label{eq:minimize_reduced}
+\sum_{i = 1}^n \CC_{T_G} \big( - C_i, \KK_i.r, \KK_i. n, \ff_G(v) \big),
+\end{equation}
+and further to maximizing 
+\begin{equation}
+\label{eq:maximize}
+\sum_{i = 1}^n \CC_{T_G} \big( C_i, \KK_i.r \KK_i.n, \ff_G(v) \big) =
+\sum_{i = 1}^n C_i D_{\KK_i},
+\end{equation}
+where 
+\[
+D_{\KK} = 
+\begin{cases}
+\Big( 1 + \frac{ \KK.r }{ \KK.n} \Big)^{ \lfloor \KK_i.n ( T_G - \ff_G(v) ) \rfloor } & \mbox{if } n \in \mathfrak{N} \\
+e^{ \KK.r \KK.n} & \mbox{if } n = \infty.
+\end{cases}
+\]
+Also $C_i \in [0, \CC_{\ff_G(v)}(\KK_i)]$ for all $i$. Intuitively, it appears that it makes sense to maximize $C_i$ of which the constant factor  $D_{\KK_i}$ is the largest, then substract $C_i$ from $C$ and proceed with the procedure in greed fashion until $C$ becomes zero. The following theorem proves this intuition.
+\begin{thm}[Theorem]
+Given $C \in \RR_>$, ${C_1, \dots, C_n}$ such that $\sum_i C_i = C$, $C_i \geq 0$ for all $i$, and factors ${d_1, \dots, d_n}$
+\end{thm}
+
+Now we proceed to equilibrium equation. If $\mathfrak{K}$ is a contract $(K, r, n, t)$, by $A(\mathfrak{K})$ we denote the ``accumulation function'' defined as 
+\[
+\begin{cases}
+\mathfrak{C}_{\tau}(K, r, n, t) / K = \big( 1 + \frac{r}{n}\big)^{\lfloor n(\tau - t) \rfloor} & \mbox{if } n \in \mathfrak{N} \\
+\mathfrak{C}_{\tau}(K, r, n, t) / K = e^{r(\tau - t)} & \mbox{if } n = \infty.
+\end{cases}
+\]
+Whenever a node $u$ has incoming contracts from a set of parent nodes (lenders) $L$, outgoing contracts to a set of children (debtors) $D$, the equilibrium equation for $u$ is
+\begin{equation}
+\begin{aligned}
+\sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \KK.K - \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v) \big ) & - \\ 
+\sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \KK.K - \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u) \big) & = 0.
+\end{aligned}
+\end{equation}
+The above equation is equivalent to
+\begin{equation}
+\begin{aligned}
+& \sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v) \big) - \\
+& \sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u) \big) = \\
+& \sum_{v \in D} \sum_{\KK \in w(u, v)} \CC_{T_G} \big( \KK.K, \KK.r, \KK.n, \ff_G(v) \big) - \\
+& \sum_{v \in L} \sum_{\KK \in w(v, u)} \CC_{T_G} \big( \KK.K, \KK.r, \KK.n, \ff_G(u) \big). &
+\end{aligned}
+\end{equation}
+Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $(u, v) \in G.A$ a debt cut of magnitude 
+\[
+\sum_{\KK \in w_G(u, v)} \KK.K
+\]
+which satisfies trivially every $(u, v) \in G.A$.
+
+Suppose we are given a debt cut $C \in \RR_{\geq}$, $(u, v) \in G.A$
+
+Suppose that $w_G(u, v) = \{ (K, r, n, t), (K', r', n', t') \}$ and $C \in \RR_>$, $\tau$ are given. Now the sum is 
+\[
+S =\Big( K(1 + \frac{r}{n})^{ \lfloor n ( \tau - t ) \rfloor } - C + x \Big) \Big( 1 + \frac{r}{n} \Big)^{ \lfloor n ( T_G - \tau ) \rfloor } +
+\Big( K(1 + \frac{r}{n})^{ \lfloor n ( \tau - t ) \rfloor  } - x\Big) \Big( 1 + \frac{r}{n} \Big)^{ \lfloor n ( T_G - t ) \rfloor }
+\]
+\end{document}
