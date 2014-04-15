@@ -28,7 +28,7 @@
   \end{abstract}
   
   \section{Basic definitions}
-  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\mathfrak{N} \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was admitted. Together the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
+  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was granted. Together the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
 
 The most fundamental function in this paper is the equity function $e_G \colon G.V \times \RR \to \RR$ defined as 
 \begin{align*}
@@ -43,7 +43,7 @@ K\big( 1 + \frac{r}{n}\big)^{\lfloor n(\tau - t) \rfloor} & \mbox{if } n \in \ma
 Ke^{r(\tau - t)} & \mbox{if } n = \infty,
 \end{cases}
 \]
-and $\tau$ is no less than the time stamp of the most recent loan. Also, we assume we are given a function $\ff_G \colon G.V \to \RR$ mapping every party $u$ in the financial graph to a time point at which $u$ is ready to pay back at most all of its debts. (By ``at most'' we mean that we will try to minimize the magnitude of the nodes' debt cuts, yet it is not possible for a node, say $v$, having no loans to the other nodes, to have a debt cut any less than the sum of its loans at $\ff_G(v)$, which implies that such node $v$ will have to pay all debts at once.)
+and $\tau$ is no less than the time stamp of the most recent loan of $u$. Also, we assume we are given a function $\ff_G \colon G.V \to \RR$ mapping every party $u$ in the financial graph to a time point at which $u$ is ready to pay back at most all of its debts. (By ``at most'' we mean that we will try to minimize the magnitude of the nodes' debt cuts, yet it is not possible for a node, say $v$, having no loans to the other nodes, to have a debt cut any less than the sum of its loans at $\ff_G(v)$, which implies that such node $v$ will have to pay all debts at once.)
 
 As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max_{u \in G.V} \{ \ff_G(u) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ (which is supposed to happen at $\ff(u)$), with $(K, r, n, t) \in w_G(v, u)$, the contract being cut becomes 
 \[
@@ -80,14 +80,12 @@ Next, we rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matr
 \[
 C'_G = 1 + \sum_{(u, v) \in G.A} |w_G(u, v)|.
 \]
-(We add 1 as the matrix is supposed to be augmented.)
-
-Having the matrix filled with entries, we reduce it to reduced row echelon form, which has at least one solution (the trivial one).
-We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_n \}$ and a set of dependent variables $S_d = \{ s'_1, \dots, s'_m \colon s'_i = f(s_1, \dots, s_n) \text{ for some linear } f \}$. (In case of finite solution set containing only trivial solution, we have $|S_d| = 0$; in such a case, $S_i$ will contain all the debt cuts.) In case of infinite solution set we choose one that minimizes
+(We add 1 as the matrix is supposed to be augmented.) Having the matrix filled with entries, we reduce it to reduced row echelon form, which has at least one solution (the trivial one).
+We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_n \}$ and a set of dependent variables $S_d = \{ s'_1, \dots, s'_m \colon s'_i = f_i(s_1, \dots, s_n) \text{ for some linear } f_i \}$. (In case of finite solution set containing only trivial solution, we have $|S_d| = 0$; in such a case, $S_i$ will contain all the debt cuts.) In case of infinite solution set we choose one that minimizes
 \[
-\sum_{s \in S_i} + \sum_{s \in S_d}	, 
+\sum_{s \in S_i} + \sum_{s \in S_d} = \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} s'_i = \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} f_i(s_1, \dots, s_n) 
 \]
-subject to constraint of not exceeding the contract with a debt cut, which is a simple linear program.
+subject to constraint of not exceeding the contract with a debt cut, which is a linear program.
 
 \section{Experimental results}
 Here goes the experiments...
