@@ -60,8 +60,8 @@ Once given $G$, $\ff_G$ and $T_G$, we attempt to compute a function $\Xi_G \colo
 Whenever a node $u$ has incoming contracts from a set of parent nodes (lenders) $L$, outgoing contracts to a set of children (debtors) $D$, the equilibrium equation for $u$ is
 \begin{equation*}
 \begin{aligned}
-\sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \KK.K - \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v) \big ) & - \\ 
-\sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \KK.K - \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u) \big) & = 0.
+\sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \CC_{\ff_G(v)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v) \big ) & - \\ 
+\sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \CC_{\ff_G(u)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u) \big) & = 0.
 \end{aligned}
 \end{equation*}
 The above equation is equivalent to
@@ -70,8 +70,8 @@ The above equation is equivalent to
 \begin{aligned}
 & \sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v) \big) - \\
 & \sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u) \big) = \\
-& \sum_{v \in D} \sum_{\KK \in w(u, v)} \CC_{T_G} \big( \KK.K, \KK.r, \KK.n, \ff_G(v) \big) - \\
-& \sum_{v \in L} \sum_{\KK \in w(v, u)} \CC_{T_G} \big( \KK.K, \KK.r, \KK.n, \ff_G(u) \big). &
+& \sum_{ v \in D } \sum_{ \KK \in w_G(u, v) } \CC_{T_G} \big( \CC_{ \ff_G(v) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( v ) \big) - \\
+& \sum_{ v \in L } \sum_{ \KK \in w_G(v, u) } \CC_{T_G} \big( \CC_{ \ff_G(u) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( u ) \big). \\
 \end{aligned}
 \end{equation}
 Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} are known before-hand. 
@@ -85,7 +85,7 @@ We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_
 \[
 \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} s'_i = \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} f_i(s_1, \dots, s_n) 
 \]
-subject to constraint of not exceeding the contract with a debt cut, which is a linear program that, once solved, yields the desired $\Xi$.
+subject to constraint of not exceeding a contract with a debt cut, which is a linear program that, once solved, yields the desired $\Xi$.
 
 \section{Experimental results}
 Here goes the experiments...
