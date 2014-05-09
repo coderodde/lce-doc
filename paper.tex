@@ -45,7 +45,7 @@ Ke^{r(\tau - t)} & \mbox{if } n = \infty,
 \]
 and $\tau$ is no less than the time stamp of the most recent loan of $u$. Also, we assume we are given a function $\ff_G \colon G.V \to \RR$ mapping every party $u$ in the financial graph to a time point at which $u$ is ready to pay back at most all of its debts. (By ``at most'' we mean that we will try to minimize the magnitude of the nodes' debt cuts, yet it is not possible for a node, say $v$, having no loans to the other nodes, to have a debt cut any less than the sum of its loans at $\ff_G(v)$, which implies that such node $v$ will have to pay all debts at once.)
 
-As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max_{u \in G.V} \{ \ff_G(u) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ (which is supposed to happen at $\ff(u)$), with $(K, r, n, t) \in w_G(v, u)$, the contract being cut becomes 
+As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max_{u \in G.V} \{ \ff_G(u) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ (which is supposed to happen at $\ff_G(u)$), with $(K, r, n, t) \in w_G(v, u)$, the contract being cut becomes 
 \[
 \CC_{\tau}\big(\CC_{\ff_G(u)}(K, r, n, t) - C, r, n, \ff_G(u) \big),
 \]
