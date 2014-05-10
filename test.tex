@@ -22,6 +22,7 @@
 
 \begin{center}
 \centerline{\includegraphics{lce-sample}}
+\end{center}
 \begin{description}
 \item[ab] $(3,0.14,\infty,1)$,
 \item[bc] $(2, 0.11, 4, 1.4)$,
@@ -30,13 +31,29 @@
 \end{description}
 Equilibrium equation for node $A$:
 \begin{align*}
-\Xi[ab]e^{0.14 (11.7 - 6)} - \Xi[ca] \Big( 1 + \frac{0.05}{6} \Big)^{ \lfloor 6 (11.7 - 4) \rfloor } - \Xi[ca2] e^{0.27 (11.7 - 4)} &= \\
-\underline{2.221 \, \Xi[ab] - 1.464 \, \Xi[ca] - 7.996 \, \Xi[ca2]} &= \\
-\CC_{T_G} ( 3e^{ 0.14(6 - 1), 0.14, \infty, 6 } ) &- \\
+\Xi(ab)e^{0.14 (11.7 - 6)} - \Xi(ca) \Big( 1 + \frac{0.05}{6} \Big)^{ \lfloor 6 (11.7 - 4) \rfloor } - \Xi(ca2) e^{0.27 (11.7 - 4)} &= \\
+\underline{2.221 \, \Xi(ab) - 1.464 \, \Xi(ca) - 7.996 \, \Xi(ca2)} &= \\
+\CC_{T_G} ( 3e^{ 0.14(6 - 1) }, 0.14, \infty, 6 ) &- \\
 \CC_{T_G} ( 2.5 \Big( 1 + \frac{0.05}{6} \Big)^{ \lfloor 6(4 - 0.5) \rfloor }, 0.05, 6, 4 ) &- \\
  \CC_{T_G} ( e^{ 0.27 (4 - 1.7) }, 0.27, \infty, 4 ) &= \\
- \CC_{T_G} (6.041, 0.14, \infty, 6) - \CC_{T_G} ( 2.975, 0.05, 6, 4 ) - \CC_{T_G} ( 1.861, 0.27, \infty, 4 )
+ \CC_{T_G} (6.041, 0.14, \infty, 6) - \CC_{T_G} ( 2.975, 0.05, 6, 4 ) - \CC_{T_G} ( 1.861, 0.27, \infty, 4 ) &= \\
+ 13.417 - 4.358 - 14.881 = \underline{-5.822}.
 \end{align*}
-
-\end{center}
+Equilibrium equation for node $B$:
+\begin{align*}
+\Xi(bc) \Big( 1 + \frac{0.11}{4} \Big)^{ \lfloor 4(11.7 - 7) \rfloor } - \Xi(ab) e^{0.14( 11.7 - 6 ) } &= \\
+\underline{ 1.629 \, \Xi(bc) - 2.221 \, \Xi(ab) } &= \\
+\CC_{T_G} (2 \Big( 1 + \frac{0.11}{4} \Big)^{ \lfloor 4(7 - 1.4) \rfloor }, 0.11, 4, 7 ) - \CC_{T_G} ( 3e^{0.14 ( 6 - 1 ) }, 0.14, \infty, 6 ) &= \\
+\CC_{T_G} ( 3.632, 0.11, 4, 7 ) - \CC_{T_G} ( 6.041, 0.14, \infty, 6 ) &= \\ 
+3.632 \Big( 1 + \frac{0.11}{4} \Big)^{\lfloor 4(11.7 - 7) \rfloor} - 6.041e^{0.14(11.7 - 6)} &= \\
+5.918 - 13.417 &= \\
+\underline{-7.499}
+\end{align*}
+Equilibrium equation for node $C$:
+\begin{align*}
+\Xi(ca) \Big( 1 + \frac{0.05}{6} \Big)^{ \lfloor 6 ( 11.7 - 4) \rfloor } + \Xi(ca2) e^{ 0.27(11.7 - 4) } - \Xi(bc) \Big( 1 + \frac{0.11}{4} \Big)^{ \lfloor 4 (11.7 - 7) \rfloor } &= \\
+\underline{1.464 \, \Xi(ca) +7.996 \, \Xi(ca2) - 1.629 \, \Xi(bc)} &= \\
+\CC_{T_G} ( 2.5 \Big( 1 + \frac{0.05}{6} \Big)^{ \lfloor 6 ( 4 - 0.5 ) \rfloor }, 0.05, 6, 4) + \CC_{T_G} ( e^{ 0.27 (4 - 1.7) }, 0.27, \infty, 4 ) - \CC_{T_G} ( 2 \Big(  \Big) ) &= \\
+fd
+\end{align*}
 \end{document}
