@@ -28,7 +28,7 @@
   \end{abstract}
   
   \section{Basic definitions}
-  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was granted. Together the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
+  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was granted. Together, the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
 
 The most fundamental function in this paper is the equity function $e_G \colon G.V \times \RR \to \RR$ defined as 
 \begin{align*}
@@ -50,7 +50,7 @@ As the concept of equilibria in this paper is a global phenomenon, we demand tha
 \CC_{\tau}\big(\CC_{\ff_G(u)}(K, r, n, t) - C, r, n, \ff_G(u) \big),
 \]
 $\tau \geq \ff_G(u)$.
- Next we define the concept of equilibrium.
+ Next, we define the concept of equilibrium.
 \begin{mydef}
 The financial graph $G$ is said to be in equilibrium at time point $\tau$ if and only if $e_G(u,\tau) = 0$ for all $u \in G.V$.
 \end{mydef}
@@ -74,20 +74,14 @@ The above equation is equivalent to
 & \sum_{ v \in L } \sum_{ \KK \in w_G(v, u) } \CC_{T_G} \big( \CC_{ \ff_G(u) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( u ) \big). \\
 \end{aligned}
 \end{equation}
-Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} are known before-hand. 
-
-Next, we rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matrix, where 
+Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} are known before-hand. We rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matrix, where 
 \[
 C'_G = 1 + \sum_{(u, v) \in G.A} |w_G(u, v)|.
 \]
 (We add 1 as the matrix is supposed to be augmented.) Having the matrix filled with entries, we reduce it to reduced row echelon form, which has at least one solution (the trivial one).
-We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_n \}$ and a set of dependent variables $S_d = \{ s'_1, \dots, s'_m \colon s'_i = f_i(s_1, \dots, s_n) \text{ for some linear } f_i \}$. (In case of finite solution set containing only trivial solution, we have $|S_d| = 0$; in such a case, $S_i$ will contain all the debt cuts.) In case of infinite solution set we choose one that minimizes
+We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_n \}$ and a set of dependent variables $S_d = \{ s'_1, \dots, s'_m \colon s'_i = f_i(s_1, \dots, s_n) \text{ for some linear } f_i \}$. (In case of finite solution set containing only trivial solution, we have $|S_d| = 0$; in such a case, $S_i$ will contain all the debt cuts.) In case of infinite solution set, we choose one that minimizes
 \[
 \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} s'_i = \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} f_i(s_1, \dots, s_n) 
 \]
 subject to constraint of not exceeding a contract with a debt cut, which is a linear program that, once solved, yields the desired $\Xi$.
-
-\section{Experimental results}
-Here goes the experiments...
-
 \end{document}
