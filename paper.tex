@@ -9,6 +9,7 @@
 \usepackage[ruled]{algorithm2e}
 \usepackage{empheq}
 \usepackage{float}
+\usepackage[left=100pt, right=100pt]{geometry}
 
 \newcommand{\RR}{\mathfrak{R}}
 \newcommand{\KK}{\mathfrak{K}}
@@ -39,7 +40,7 @@ where
 \[
 \CC_{\tau}(K, r, n, t) = 
 \begin{cases}
-K\big( 1 + \frac{r}{n}\big)^{\lfloor n(\tau - t) \rfloor} & \mbox{if } n \in \mathfrak{N} \\
+K\big( 1 + \frac{r}{n}\big)^{\lfloor n(\tau - t) \rfloor} & \mbox{if } n \in \mathfrak{R_>} \\
 Ke^{r(\tau - t)} & \mbox{if } n = \infty,
 \end{cases}
 \]
