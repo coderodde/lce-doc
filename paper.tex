@@ -50,8 +50,12 @@ As the concept of equilibria in this paper is a global phenomenon, we demand tha
 \[
 \CC_{\tau}\big(\CC_{\ff_G(u, \KK)}(K, r, n, t) - C, r, n, \ff_G(u, \KK) \big),
 \]
-$\tau \geq \ff_G(u, \KK)$.
- Next, we define the concept of equilibrium.
+where $\tau \geq \ff_G(u, \KK)$.
+There is, however, a small issue with debt contracts with non-continuous compounding scheme. Consider a contract $\KK = (K, r, n, t)$ with $n \in \RR_>$, given from $v$ to $u$. Suppose also $t' = \ff_G(u, \KK).$ Now it is easy to see that after cutting $\KK = (K, r, n, t)$, the contract $\KK$ ``shifts'' forward in time by $n(t' - t) - \lfloor n(t' - t) \rfloor$. As to keep compounding at moments $t + n^{-1}, t + 2n^{-1}, t + 3n^{-1}, \dots$, we should set the cut contract to 
+\[
+\CC_{\tau}\bigg( \CC_{\ff_G(u, \KK)}(K, r, n, t) - \Xi(v, u, \KK), r, n, \ff_G(u, \KK) - g \Big(n(\ff_G(u, \KK) - t) \Big) \bigg),
+\]
+where $g(x) = x - \lfloor x \rfloor$. Next, we define the concept of equilibrium.
 \begin{mydef}
 The financial graph $G$ is said to be in equilibrium at time point $\tau$ if and only if $e_G(u,\tau) = 0$ for all $u \in G.V$.
 \end{mydef}
