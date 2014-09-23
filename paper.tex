@@ -46,16 +46,24 @@ Ke^{r(\tau - t)} & \mbox{if } n = \infty,
 \]
 and $\tau$ is no less than the time stamp of the most recent loan of $u$. Also, we assume we are given a function $\ff_G \colon G.V \times \RR_{>} \times \RR_{\geq} \times (\RR_{>} \cup \infty) \times \RR \to \RR$ mapping every tuple $(u, \KK)$ (a node and a contract) in the financial graph to a time point at which $u$ is ready to pay back at most all of its debts on behalf of a contract $\KK$. (By ``at most'' we mean that we will try to minimize the magnitude of the nodes' debt cuts for every contract, yet it is not possible for a node, say $v$, having no loans to the other nodes, to have a debt cut for a contract $\KK$ any less than the value of $\KK$ at time $\ff_G(v, \KK)$, which implies that such contract $\KK$ will have to be cut in its entirety.)
 
-As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max \{ \ff_G(\star, \star) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ against a contract $\KK$ (which is supposed to happen at $\ff_G(u, \KK)$), with $\KK = (K, r, n, t)$, the contract being cut becomes 
+As the concept of equilibria in this paper is a global phenomenon, we demand that a time point $T_G$ is given; especially, we demand that $T_G \geq \max \{ \ff_G(*, *) \}$. Whenever a party, say $u \in G.V$, is ready to raise $C$ amount of resources for the debt cut to $v$ against a contract $\KK$ (which is supposed to happen at $\ff_G(u, \KK)$), with $\KK = (K, r, n, t)$, the contract being cut becomes 
 \[
 \CC_{\tau}\big(\CC_{\ff_G(u, \KK)}(K, r, n, t) - C, r, n, \ff_G(u, \KK) \big),
 \]
 where $\tau \geq \ff_G(u, \KK)$.
-There is, however, a small issue with debt contracts with non-continuous compounding scheme. Consider a contract $\KK = (K, r, n, t)$ with $n \in \RR_>$, given from $v$ to $u$. Suppose also $t' = \ff_G(u, \KK).$ Now it is easy to see that after cutting $\KK = (K, r, n, t)$, the contract $\KK$ ``shifts'' forward in time by $n(t' - t) - \lfloor n(t' - t) \rfloor$. As to keep compounding at moments $t + n^{-1}, t + 2n^{-1}, t + 3n^{-1}, \dots$, we should set the cut contract to 
+There is, however, a small issue with debt contracts with non-continuous compounding scheme. Let us define a function of time and a contract:
 \[
-\CC_{\tau}\bigg( \CC_{\ff_G(u, \KK)}(K, r, n, t) - \Xi(v, u, \KK), r, n, \ff_G(u, \KK) - g \Big(n(\ff_G(u, \KK) - t) \Big) \bigg),
+g(\tau, \KK) = \begin{cases}
+0 & \mbox{if } \KK.n = \infty, \\
+g'( \KK.n ( \tau - \KK.t ) ) & \mbox{otherwise,}
+\end{cases}
 \]
-where $g(x) = x - \lfloor x \rfloor$. Next, we define the concept of equilibrium.
+where $g'(x) = x - \lfloor x \rfloor$.
+Consider a contract $\KK = (K, r, n, t)$ given from $v$ to $u$ with $n \in \RR_>$. It is easy to see that after cutting $\KK$, it ``shifts'' forward in time by $g(\ff_G(u, \KK), \KK)$. As to keep compounding at moments $t + n^{-1}, t + 2n^{-1}, t + 3n^{-1}, \dots$, we should set the cut contract to 
+\[
+\CC_{\tau}\bigg( \CC_{\ff_G(u, \KK)}(K, r, n, t) - \Xi(v, u, \KK), r, n, g(\ff_G(u, \KK), \KK) \bigg),
+\]
+Next, we define the concept of equilibrium.
 \begin{mydef}
 The financial graph $G$ is said to be in equilibrium at time point $\tau$ if and only if $e_G(u,\tau) = 0$ for all $u \in G.V$.
 \end{mydef}
@@ -79,7 +87,7 @@ The above equation is equivalent to
 & \sum_{ v \in L } \sum_{ \KK \in w_G(v, u) } \CC_{T_G} \big( \CC_{ \ff_G(u, \KK) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( u , \KK) \big). \\
 \end{aligned}
 \end{equation}
-Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v, \KK)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} are known before-hand. We rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matrix, where 
+Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v, \KK)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} is known before-hand. We rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matrix, where 
 \[
 C'_G = 1 + \sum_{(u, v) \in G.A} |w_G(u, v)|.
 \]
