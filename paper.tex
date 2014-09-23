@@ -9,7 +9,7 @@
 \usepackage[ruled]{algorithm2e}
 \usepackage{empheq}
 \usepackage{float}
-\usepackage[left=100pt, right=100pt]{geometry}
+\usepackage[left=90pt, right=90pt]{geometry}
 
 \newcommand{\RR}{\mathfrak{R}}
 \newcommand{\KK}{\mathfrak{K}}
@@ -29,7 +29,7 @@
   \end{abstract}
   
   \section{Basic definitions}
-  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$, we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was granted. Together, the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
+  Before we proceed to defining the structures needed in discussing the method, we have to impose some definitions: by $\RR_?$ we denote the set of real numbers $x$ such that $x \, ? \, 0$ holds. We work on a directed graph $G=(V,A)$, $A \subset V \times V$, for which we define a weight function $w_G \colon G.A \to \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$. If $(K, r, n, t) \in \mathcal{P}(\RR_> \times \RR_{\geq} \times (\RR_> \cup \{\infty\}) \times \RR)$, $K$ is the initial principal investment, $r$ is the annual interest rate, $n$ is the amount of compounding periods per year (the value of $\infty$ is allowed, which denotes continuous compounding), and $t$ is the time point at which the loan was granted. Together, the four parameters comprise a \textit{contract}. (Note that the ``weight'' of an edge is a \textbf{set} of contracts as this is physically possible in real-world banking.) 
 
 The most fundamental function in this paper is the equity function $e_G \colon G.V \times \RR \to \RR$ defined as 
 \begin{align*}
@@ -73,25 +73,25 @@ Once given $G$, $\ff_G$ and $T_G$, we attempt to compute a function $\Xi_G \colo
 Whenever a node $u$ has incoming contracts from a set of parent nodes (lenders) $L$, outgoing contracts to a set of children (debtors) $D$, the equilibrium equation for $u$ is
 \begin{equation*}
 \begin{aligned}
-\sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \CC_{\ff_G(v, \KK)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v, \KK) \big ) & - \\ 
-\sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \CC_{\ff_G(u, \KK)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u, \KK) \big) & = 0.
+\sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \CC_{\ff_G(v, \KK)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(u, v, \KK), \KK.r, \KK.n,  \ff_G(v, \KK)  -  g(\ff_G(v, \KK), \KK) \big) & - \\ 
+\sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \CC_{\ff_G(u, \KK)} ( \KK.K, \KK.r, \KK.n, \KK.t ) - \Xi(v, u, \KK), \KK.r, \KK.n,   \ff_G(u, \KK) -  g(\ff_G(u, \KK), \KK) \big) & = 0.
 \end{aligned}
 \end{equation*}
 The above equation is equivalent to
 \begin{equation}
 \label{eq:equilibrium}
 \begin{aligned}
-& \sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v, \KK) \big) - \\
-& \sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u, \KK) \big) = \\
-& \sum_{ v \in D } \sum_{ \KK \in w_G(u, v) } \CC_{T_G} \big( \CC_{ \ff_G(v, \KK) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( v, \KK ) \big) - \\
-& \sum_{ v \in L } \sum_{ \KK \in w_G(v, u) } \CC_{T_G} \big( \CC_{ \ff_G(u, \KK) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( u , \KK) \big). \\
+& \sum_{v \in D} \sum_{\KK \in w_G(u, v)} \CC_{T_G} \big( \Xi(u, v, \KK), \KK.r, \KK.n, \ff_G(v, \KK) - g( \ff_G(v, \KK), \KK )  \big) - \\
+& \sum_{v \in L} \sum_{\KK \in w_G(v, u)} \CC_{T_G} \big( \Xi(v, u, \KK), \KK.r, \KK.n, \ff_G(u, \KK)  -  g( \ff_G(u, \KK), \KK ) \big) = \\
+& \sum_{ v \in D } \sum_{ \KK \in w_G(u, v) } \CC_{T_G} \big( \CC_{ \ff_G(v, \KK) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( v, \KK ) - g( \ff_G(v, \KK), \KK ) \big) - \\
+& \sum_{ v \in L } \sum_{ \KK \in w_G(v, u) } \CC_{T_G} \big( \CC_{ \ff_G(u, \KK) } (\KK.K, \KK.r, \KK.n, \KK.t), \KK.r, \KK.n, \ff_G( u , \KK) - g( \ff_G(u, \KK), \KK ) \big). \\
 \end{aligned}
 \end{equation}
-Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v, \KK)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(\star, \star, \star)$ are to be determined, yet everything else in \eqref{eq:equilibrium} is known before-hand. We rewrite all equilibrium equations as a $\RR^{|G.V| \times C'_G}$ - matrix, where 
+Now if we write down equilibrium equations for all nodes $v \in G.V$, we obtain a linear system, which is guaranteed to have a solution as we can choose for each $\KK \in w_G(u, v)$ a debt cut of magnitude $\CC_{\ff_G(v, \KK)}(\KK)$, which results in trivial equilibrium. All the terms $\Xi(*, *, *)$ are to be determined, yet everything else in \eqref{eq:equilibrium} is known before-hand. We rewrite all equilibrium equations as a $\RR^{|G.V| \times C}$ - matrix, where 
 \[
-C'_G = 1 + \sum_{(u, v) \in G.A} |w_G(u, v)|.
+C = 1 + \sum_{(u, v) \in G.A} |w_G(u, v)|
 \]
-(We add 1 as the matrix is supposed to be augmented.) Having the matrix filled with entries, we reduce it to reduced row echelon form, which has at least one solution (the trivial one).
+(we add 1 as the matrix is supposed to be augmented). Having the matrix filled up with entries, we reduce it to reduced row echelon form, which has at least one solution (the trivial one).
 We will obtain two sets: a set of independent variables $S_i = \{ s_1, \dots, s_n \}$ and a set of dependent variables $S_d = \{ s'_1, \dots, s'_m \colon s'_i = f_i(s_1, \dots, s_n) \text{ for some linear } f_i \}$. (In case of finite solution set containing only trivial solution, we have $|S_d| = 0$; in such a case, $S_i$ will contain all the debt cuts.) In case of infinite solution set, we choose one that minimizes
 \[
 \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} s'_i = \sum_{i = 1}^{n} s_i + \sum_{i = 1}^{m} f_i(s_1, \dots, s_n) 
